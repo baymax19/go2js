@@ -14,7 +14,7 @@ build:
 #   - mkdir -p gitlab.com/$CI_PROJECT_NAMESPACE
    - mkdir -p $GOPATH/src/main
 #   - cd gitlab.com/$CI_PROJECT_NAMESPACE
-   - ln -s /builds/baymax19/gitlab-ci $GOPATH/src/main
+   - ln -svf $CI_PROJECT_DIR  $GOPATH/src/main
    - cd $GOPATH/src/main
  script:
    - go build -o hello
