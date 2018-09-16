@@ -1,6 +1,11 @@
+#variables:
+#  REPO_NAME:
+
 stages:
  - build
-
+#cache:
+# paths:
+#  - vendor/
 build:
  stage: build
  image: golang:1.9.2
