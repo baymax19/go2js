@@ -7,10 +7,10 @@ build:
  before_script:
 #   - cd $GOPATH/src
 #   - mkdir -p gitlab.com/$CI_PROJECT_NAMESPACE
-   - mkdir -p $GOPATH/src/github.com/main
+   - mkdir -p $GOPATH/src/main
 #   - cd gitlab.com/$CI_PROJECT_NAMESPACE
-   - ln -s /builds/baymax19/main $GOPATH/src/github.com/main
-   - cd $GOPATH/src/github.com/main
+   - ln -s /builds/baymax19/main $GOPATH/src/main
+   - cd $GOPATH/src/main
  script:
    - go build -o hello
    - ./hello
