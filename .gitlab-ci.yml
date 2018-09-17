@@ -10,7 +10,7 @@ build:
  stage: build
  image: golang:1.9.2
  before_script:
-#   - cd $GOPATH/src
+   - cd $GOPATH/src
 #   - mkdir -p $CI_PROJECT_NAMESPACE
    - mkdir -p main
 #   - cd $CI_PROJECT_NAMESPACE
