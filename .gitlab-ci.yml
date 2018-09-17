@@ -11,12 +11,12 @@ build:
  image: golang:1.9.2
  before_script:
    - cd $GOPATH/src
-   - mkdir -p $CI_PROJECT_NAMESPACE
-#   - mkdir -p main
-   - cd $CI_PROJECT_NAMESPACE
-#   - cd $GOPATH/src/main
+#   - mkdir -p $CI_PROJECT_NAMESPACE
+   - mkdir -p main
+#   - cd $CI_PROJECT_NAMESPACE
+   - cd $GOPATH/src/main
    - ln -s $CI_PROJECT_DIR
-   - cd $ GOPATH/src/main
+   - cd $CI_PROJECT_NAME
  script:
    - go build -o hello
    - ./hello
