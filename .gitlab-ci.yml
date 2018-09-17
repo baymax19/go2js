@@ -10,12 +10,12 @@ build:
  stage: build
  image: golang:1.9.2
  before_script:
-   - cd $GOPATH/src
+#   - cd $GOPATH/src
 #   - mkdir -p $CI_PROJECT_NAMESPACE
-   - mkdir -p main
+#   - mkdir -p main
 #   - cd $CI_PROJECT_NAMESPACE
    - cd $GOPATH/src/main
-   - ln -s $CI_PROJECT_DIR
+   - ln -s /builds/baymax19/gitlab-ci /go/src
 #   - cd $CI_PROJECT_NAME
    - cd $GOPATH/src/main
  script:
