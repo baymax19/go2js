@@ -11,12 +11,12 @@ build:
  image: golang:1.9.2
  before_script:
    - cd $GOPATH/src
-#   - mkdir -p gitlab.com/$CI_PROJECT_NAMESPACE
-   - mkdir -p main
-#   - cd gitlab.com/$CI_PROJECT_NAMESPACE
+   - mkdir -p $CI_PROJECT_NAMESPACE
+#   - mkdir -p main
+   - cd $CI_PROJECT_NAMESPACE
 #   - cd $GOPATH/src/main
-   - ln -svf /builds/baymax19/gitlab-ci $GOPATH/src/main
-   - cd $GOPATH/src/main
+   - ln -s $CI_PROJECT_DIR
+   - cd $CI_PROJECT_NAME
  script:
    - go build -o hello
    - ./hello
