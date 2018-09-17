@@ -16,7 +16,7 @@ build:
 #   - cd $CI_PROJECT_NAMESPACE
    - cd $GOPATH/src/main
    - ln -s $CI_PROJECT_DIR
-   - cd $CI_PROJECT_NAME
+#   - cd $CI_PROJECT_NAME
  script:
    - go build -o hello
    - ./hello
