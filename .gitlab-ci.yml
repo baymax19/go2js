@@ -17,6 +17,7 @@ build:
    - cd $GOPATH/src/main
    - ln -s $CI_PROJECT_DIR
 #   - cd $CI_PROJECT_NAME
+   - cd $GOPATH/src/main
  script:
    - go build -o hello
    - ./hello
