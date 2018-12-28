@@ -25,6 +25,24 @@
 #   unused-packages = true
 
 
+[[constraint]]
+  name = "github.com/cosmos/cosmos-sdk"
+  version = "0.29.0"
+
+[[override]]
+  name = "golang.org/x/crypto"
+  source = "https://github.com/tendermint/crypto"
+  revision = "3764759f34a542a3aef74d6b02e35be7ab893bba"
+
+[[override]]
+  name = "github.com/tendermint/iavl"
+  version = "v0.12.0"
+
+[[override]]
+  name = "github.com/tendermint/tendermint"
+  revision = "v0.27.3"
+
+
 [prune]
   go-tests = true
   unused-packages = true
