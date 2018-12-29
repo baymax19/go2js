@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/mintkey"
+	"github.com/cosmos/go-bip39"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
@@ -70,19 +71,8 @@ func main() {
 
 func createkey(name, password string) *js.Object {
 
-	//entropy, err := bip39.NewEntropy(defaultEntropySize)
-	//if err != nil {
-	//	return ""
-	//}
-	//mnemonic, err := bip39.NewMnemonic(entropy)
-	//if err != nil {
-	//	return ""
-	//}
-	//
-	//seed := bip39.NewSeed(mnemonic, defaultBIP39Passphrase)
-
-	seed := "horror guess faint sense sorry cloth medal autumn rocket census unfold bright loan swear agent tray city away hurt chunk hybrid race cash nice"
-
+	mnemonic := "horror guess faint sense sorry cloth medal autumn rocket census unfold bright loan swear agent tray city away hurt chunk hybrid race cash nice"
+	seed := bip39.NewSeed(mnemonic, "")
 	masterPriv, ch := hd.ComputeMastersFromSeed([]byte(seed))
 
 	deriverdPriv, err := hd.DerivePrivateKeyForPath(masterPriv, ch, hd.FullFundraiserPath)
@@ -109,7 +99,7 @@ func createkey(name, password string) *js.Object {
 	}
 
 	data := &AccountInfo{Object: js.Global.Get("Object").New()}
-	data.Address = addressCosmos
+	data.Address =  addressCosmos
 	data.PubKey = pubkeyCosmos
 	data.Name = name
 	data.PrivKey = hex.EncodeToString(privateKey.Bytes())
