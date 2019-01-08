@@ -1,14 +1,16 @@
 package main
 
 import (
-	"encoding/base64"
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"math/big"
+	"net/http"
 
-	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/gopherjs/gopherjs/js"
+	amino "github.com/tendermint/go-amino"
 	"github.com/tendermint/tendermint/crypto"
 	cryptoAmino "github.com/tendermint/tendermint/crypto/encoding/amino"
 	"github.com/tendermint/tendermint/libs/bech32"
@@ -93,7 +95,7 @@ func (msg MsgSend) ValidateBasic() error {
 	return nil
 }
 
-var msgCdc = codec.New()
+var msgCdc = amino.NewCodec()
 
 // Return bytes to sign for Input
 func (in Input) GetSignBytes() []byte {
@@ -234,6 +236,9 @@ func (aa AccAddress) Bytes() []byte {
 	return aa
 }
 
+//tx
+type Tx []byte
+
 func main() {
 	js.Module.Get("exports").Set("buildAndSignAndBroadcast", buildAndSignAndBroadcast)
 	//buildAndSign("from", "to", "100coins", "priv")
@@ -241,6 +246,17 @@ func main() {
 }
 
 func buildAndSignAndBroadcast(from, to, coins, priv string) {
+
+	msgCdc.RegisterInterface((*Msg)(nil), nil)
+	msgCdc.RegisterConcrete(MsgSend{}, "SendMsg", nil)
+	msgCdc.RegisterConcrete(StdTx{}, "StdTx", nil)
+
+	msgCdc.RegisterConcrete(Input{}, "Input", nil)
+	msgCdc.RegisterConcrete(Output{}, "OutPut", nil)
+	msgCdc.RegisterConcrete(Coin{}, "coin", nil)
+	msgCdc.RegisterConcrete(StdFee{}, "Fee", nil)
+	msgCdc.RegisterConcrete(StdSignature{}, "stdSign", nil)
+	cryptoAmino.RegisterAmino(msgCdc)
 
 	_, fromAdd, err := bech32.DecodeAndConvert(from)
 
@@ -288,17 +304,39 @@ func buildAndSignAndBroadcast(from, to, coins, priv string) {
 	stdTx.Signatures = signs
 	fmt.Println("sign bytes", stdTx)
 
-	cdc := *codec.New()
-	bytess := cdc.MustMarshalBinaryLengthPrefixed(stdTx)
+	// bytess := cdc.MustMarshalBinaryLengthPrefixed(stdTx)
+	// fmt.Println(bytess)
 
-	cdc.RegisterConcrete(StdTx{}, "StdTx", nil)
-	cdc.RegisterConcrete(MsgSend{}, "SendMsg", nil)
-	cdc.RegisterConcrete(Input{}, "Input", nil)
-	cdc.RegisterConcrete(Output{}, "OutPut", nil)
-	cdc.RegisterConcrete(Coin{}, "coin", nil)
-	cdc.RegisterConcrete(StdFee{}, "Fee", nil)
-	cdc.RegisterConcrete(StdSignature{}, "stdSign", nil)
-	cdc.RegisterInterface((*Msg)(nil), nil)
+	broadcastPayload := struct {
+		Tx     StdTx  `json:"tx"`
+		Return string `json:"return"`
+	}{Tx: stdTx, Return: "block"}
+
+	json, err := msgCdc.MarshalJSON(broadcastPayload)
+	if err != nil {
+		panic(err)
+	}
+
+	var res *http.Response
+
+	url := fmt.Sprintf("http://localhost:26657%v", "/broadcast_tx_commit?tx=")
+	//fmt.Printf("REQUEST %s %s\n", "GET", url)
+	val := bytes.NewBuffer(json)
+	req, err := http.NewRequest("GET", url, val)
+
+	res, err = http.DefaultClient.Do(req)
+	fmt.Println("111111111111111111")
+	output, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+	res.Body.Close()
+
+	// var resultTx ctypes.ResultBroadcastTxCommit
+	// if err = cdc.UnmarshalJSON([]byte(string(output)), &resultTx); err != nil {
+	// 	panic(err)
+	// }
+	fmt.Println(string(output))
 
 	//bytess, err := json.Marshal(stdTx)
 	//if err != nil {
@@ -306,7 +344,7 @@ func buildAndSignAndBroadcast(from, to, coins, priv string) {
 	//}
 
 	// fmt.Println("marshal bytes", hex.EncodeToString(bytess))
-	fmt.Println(base64.StdEncoding.EncodeToString(bytess))
+	// fmt.Println(base64.StdEncoding.EncodeToString(bytess))
 
 	//body := struct {
 	//	Method  string   `json:"method"`
