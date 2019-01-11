@@ -84,7 +84,7 @@ func createkey(name, password string) *js.Object {
 	//
 	//seed := bip39.NewSeed(mnemonic, defaultBIP39Passphrase)
 
-	mnemonic := "horror guess faint sense sorry cloth medal autumn rocket census unfold bright loan swear agent tray city away hurt chunk hybrid race cash nice"
+	mnemonic := "suggest when update same pizza exhaust letter road gesture mask brown slam axis sai weekend panda small sea glance innocent unusual globe modify garment"
 	seed := bip39.NewSeed(mnemonic, "")
 
 	masterPriv, ch := hd.ComputeMastersFromSeed(seed)

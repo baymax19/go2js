@@ -17,9 +17,10 @@
   revision = "d4cc87b860166d00d6b5b9e0d3b3d71d6088d4d4"
 
 [[projects]]
-  digest = "1:ce2e76eda4769310b5d66e3c18bfeecc9634f7d144a152fae9fb37c2aacf1d12"
+  digest = "1:b95e5f6c03b67e331b2ac086f447111198842b19bae6ec0636875dabf3a31380"
   name = "github.com/cosmos/cosmos-sdk"
   packages = [
+    "codec",
     "crypto/keys/hd",
     "crypto/keys/keyerror",
     "crypto/keys/mintkey",
@@ -27,6 +28,14 @@
   pruneopts = "UT"
   revision = "2b3842c58305a4e26d457d3d3bd6cf849ffddcdd"
   version = "v0.29.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0427cfa11785c899dfe0ea6987bc0c9dea61647f6bb3987163d62c867f1cad6a"
+  name = "github.com/cosmos/go-bip39"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "555e2067c45d9fcd7292bf3b8e732bc10ac8c58e"
 
 [[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
@@ -145,7 +154,7 @@
   version = "v0.27.4"
 
 [[projects]]
-  digest = "1:0629d7b1254cd4b417d87fc9229d9cb4d89604fb74ded910d17b5429458bafaa"
+  digest = "1:54722b93455211bf22b7a061417717b5fc6184c091541c9b5e2ff7e4fed2d35d"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
@@ -158,6 +167,7 @@
     "nacl/secretbox",
     "openpgp/armor",
     "openpgp/errors",
+    "pbkdf2",
     "poly1305",
     "ripemd160",
     "salsa20/salsa",
@@ -178,10 +188,13 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/cosmos/cosmos-sdk/codec",
     "github.com/cosmos/cosmos-sdk/crypto/keys/hd",
     "github.com/cosmos/cosmos-sdk/crypto/keys/mintkey",
+    "github.com/cosmos/go-bip39",
     "github.com/gopherjs/gopherjs/js",
     "github.com/tendermint/tendermint/crypto",
+    "github.com/tendermint/tendermint/crypto/encoding/amino",
     "github.com/tendermint/tendermint/crypto/secp256k1",
     "github.com/tendermint/tendermint/libs/bech32",
   ]
